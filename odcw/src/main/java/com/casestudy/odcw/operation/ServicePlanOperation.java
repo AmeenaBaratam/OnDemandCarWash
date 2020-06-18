@@ -3,29 +3,37 @@ package com.casestudy.odcw.operation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.casestudy.odcw.model.ServicePlans;
 import com.casestudy.odcw.model.dto.ServicePlanDto;
 import com.casestudy.odcw.repository.ServicePlanRepository;
-import com.casestudy.odcw.util.OdcwConstants;
+import com.casestudy.odcw.util.ODCWConstants;
+import com.casestudy.odcw.util.ODCWUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
-public class ServicePlanManagement {
+@Slf4j
+public class ServicePlanOperation {
 
 	@Autowired
 	private ServicePlanRepository servicePlanRepository;
 	
+	@Autowired
+	private ODCWUtils utils;
+	
 	public void addServicePlan(ServicePlanDto servicePlanDto) {
 		
-		Optional<ServicePlans> plan = servicePlanRepository.findById(servicePlanDto.getPlanId());
-		if(!plan.isPresent()) {
+		ServicePlans plan = servicePlanRepository.findByWashType(servicePlanDto.getWashType());
+		if(null == plan) {
 			ServicePlans service = new ServicePlans();
+			service.setId(utils.prepareId(servicePlanRepository.findAll().size(), "SP_"));
 			service.setDescription(servicePlanDto.getDescription());
-			service.setStatus(OdcwConstants.ACTIVE_STATUS);
+			service.setStatus(ODCWConstants.ACTIVE_STATUS);
 			service.setCreateDate(new Date());
 			service.setWashType(servicePlanDto.getWashType());
 			service.setWashPackage(servicePlanDto.getWashPackage());
@@ -40,14 +48,13 @@ public class ServicePlanManagement {
 		List<ServicePlans> servicePlanList = new ArrayList<>();
 
 		for(ServicePlanDto servicePlanDto : servicePlanDtoList) {
-			Optional<ServicePlans> plan = servicePlanRepository.findById(servicePlanDto.getPlanId());
-			if(plan.isPresent()) {
-				ServicePlans service = plan.get();
+			ServicePlans service = servicePlanRepository.findByWashType(servicePlanDto.getWashType());
+			if(null != service) {
 				service.setDescription(servicePlanDto.getDescription());
 				service.setStatus(servicePlanDto.getStatus());
-				service.setCreateDate(servicePlanDto.getCreateDate());
 				service.setWashType(servicePlanDto.getWashType());
 				service.setWashPackage(servicePlanDto.getWashPackage());
+				service.setModifiedDate(new Date());
 				servicePlanList.add(service);
 			}
 		}
@@ -60,6 +67,7 @@ public class ServicePlanManagement {
 		List<ServicePlans> planList = servicePlanRepository.findAll();
 		planList.stream().forEach(plan -> {
 			ServicePlanDto planDto = new ServicePlanDto();
+			planDto.setPlanId(plan.getId());
 			planDto.setDescription(plan.getDescription());
 			planDto.setWashPackage(plan.getWashPackage());
 			planDto.setWashType(plan.getWashType());
@@ -69,13 +77,24 @@ public class ServicePlanManagement {
 		return servicePlanDtos;
 	}
 	
-	public void updateStatus(ServicePlanDto servicePlanDto){
-		Optional<ServicePlans> plan = servicePlanRepository.findById(servicePlanDto.getPlanId());
-		if(null != plan)
-		{
-			ServicePlans service = plan.get();
-			service.setStatus(servicePlanDto.getStatus());
-			servicePlanRepository.save(service);
+	public List<ServicePlanDto> activeOrInActiveServicePlans(String status){
+		List<ServicePlans> plans = servicePlanRepository.findByStatus(status);
+		List<ServicePlanDto> dtos = new ArrayList<>();
+		
+		if(CollectionUtils.isEmpty(plans))
+			log.error("No " + status +" Service Plans found!");
+		else {
+		plans.stream().forEach(plan -> {
+			ServicePlanDto planDto = new ServicePlanDto();
+			planDto.setPlanId(plan.getId());
+			planDto.setDescription(plan.getDescription());
+			planDto.setWashPackage(plan.getWashPackage());
+			planDto.setWashType(plan.getWashType());
+			planDto.setStatus(plan.getStatus());
+			dtos.add(planDto);
+		});
+		log.info("Fetched all " + status +" ServicePlans ");
 		}
+		return dtos;
 	}
 }

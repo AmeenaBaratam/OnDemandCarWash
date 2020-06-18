@@ -12,40 +12,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.casestudy.odcw.model.dto.CarDetailsDto;
-import com.casestudy.odcw.operation.CarManagementOperation;
+import com.casestudy.odcw.model.dto.AddOnDto;
+import com.casestudy.odcw.operation.AddOnOperation;
 import com.casestudy.odcw.util.ODCWConstants;
 
 @RestController
-@RequestMapping("/api/car")
-public class CarManagementController {
-
+@RequestMapping("/api/addon")
+public class AddOnController {
 	@Autowired
-	private CarManagementOperation carManagementOperation;
+	private AddOnOperation addOnOperation;
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<AddOnDto>> fetchAllAddOns() {
+		List<AddOnDto> servicePlans = addOnOperation.getAllAddOns();
+		return new ResponseEntity<>(servicePlans, HttpStatus.OK);
+	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> addCar(@RequestBody CarDetailsDto carDetailsDto) {
-		carManagementOperation.addCar(carDetailsDto);
+	public ResponseEntity<String> addAddOn(@RequestBody AddOnDto addOnDto) {
+		addOnOperation.insertAddOn(addOnDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/edit")
-	public ResponseEntity<String> updateCar(@RequestBody List<CarDetailsDto> carDetailsDtoList) {
-		carManagementOperation.editCar(carDetailsDtoList);
+	public ResponseEntity<String> updateAddOn(@RequestBody List<AddOnDto> addOnDtosList) {
+		addOnOperation.updateAddOn(addOnDtosList);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/{status}")
-	public ResponseEntity<List<CarDetailsDto>> activeOrInActiveCars(@PathVariable String status){
+	public ResponseEntity<List<AddOnDto>> activeOrInActiveAddOn(@PathVariable String status){
 		if(ODCWConstants.ACTIVE_STATUS.equalsIgnoreCase(status) || ODCWConstants.INACTIVE_STATUS.equalsIgnoreCase(status))
-			return new ResponseEntity<>(carManagementOperation.activeOrInActiveCars(status),HttpStatus.OK);
+			return new ResponseEntity<>(addOnOperation.activeOrInActiveAddOn(status),HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	}
-	
-	@GetMapping("/all")
-	public ResponseEntity<List<CarDetailsDto>> findAllCars()
-	{
-		List<CarDetailsDto> carDetailsList = carManagementOperation.findAllCarsDetails();
-		return new ResponseEntity<>(carDetailsList,HttpStatus.OK);
 	}
 }

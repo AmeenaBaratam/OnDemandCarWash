@@ -5,12 +5,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document(collection = "ServicePlans")
 @Setter
 @Getter
-public class ServicePlans extends CarWashObject{
-	
+@Document(collection = "PromoCode")
+public class PromoCode extends CarWashObject{
+
+	private String name;
 	private String description;
-	private String washType;
-	private double washPackage;
+	private String validity;
+	private String discount;
+
 }

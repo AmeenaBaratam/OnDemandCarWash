@@ -1,0 +1,25 @@
+<!-- <div class="card">
+    <div class="card-body">
+        <button class="btn btn-link" routerLink="/home">Add-On Management</button><br>
+        <button class="btn btn-link" [routerLink]="['cars']">Car Management</button><br>
+        <button class="btn btn-link" [routerLink]="['service']">Service Management</button><br>
+        <button class="btn btn-link" [routerLink]="['promo']">Promo Code Management</button><br>
+        <button class="btn btn-link" [routerLink]="['user']">User Management</button><br>
+        <button class="btn btn-link" [routerLink]="['order']">Order Management</button><br>
+        <router-outlet></router-outlet>
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-md-5">
+        <button class="btn btn-link" [routerLink]="['../home']">Add-On Management</button><br>
+        <button class="btn btn-link" [routerLink]="['cars']">Car Management</button><br>
+        <button class="btn btn-link" [routerLink]="['service']">Service Management</button><br>
+        <button class="btn btn-link" [routerLink]="['promo']">Promo Code Management</button><br>
+        <button class="btn btn-link" [routerLink]="['user']">User Management</button><br>
+        <button class="btn btn-link" [routerLink]="['order']">Order Management</button><br>
+    </div>
+    <div class="col-md-4">
+        <router-outlet></router-outlet>
+    </div>
+</div>

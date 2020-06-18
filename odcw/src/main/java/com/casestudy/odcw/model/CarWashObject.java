@@ -19,4 +19,5 @@ public class CarWashObject {
 	private Date createDate;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date modifiedDate;
+	private String status;
 }
