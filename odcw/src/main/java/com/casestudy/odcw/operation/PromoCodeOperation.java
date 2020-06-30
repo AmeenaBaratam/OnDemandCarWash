@@ -1,8 +1,8 @@
 package com.casestudy.odcw.operation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.casestudy.odcw.model.PromoCode;
 import com.casestudy.odcw.model.dto.PromoCodeDto;
 import com.casestudy.odcw.repository.PromoCodeRepository;
-import com.casestudy.odcw.util.ODCWConstants;
 import com.casestudy.odcw.util.ODCWUtils;
 
 @Component
@@ -38,39 +37,25 @@ public class PromoCodeOperation {
 		return promoCodeDtos;
 	}
 	
-	public void insertPromoCode(PromoCodeDto promoCodeDto) {
-		
-		PromoCode code = promoCodeRepository.findByName(promoCodeDto.getName());
-		if(null == code) {
-			code = new PromoCode();
-			code.setId(utils.prepareId(promoCodeRepository.findAll().size(), "PC_"));
-			code.setName(promoCodeDto.getName());
-			code.setDescription(promoCodeDto.getDescription());
-			code.setStatus(ODCWConstants.ACTIVE_STATUS);
-			code.setCreateDate(new Date());
-			code.setDiscount(promoCodeDto.getDiscount());
-			code.setValidity(promoCodeDto.getValidity());
-			promoCodeRepository.save(code);
-			System.out.println("Inserted Successfully");
-		}else {
-			System.out.println("Already Existing");
-		}	
-	}
-	public void editPromoCode(List<PromoCodeDto> promoCodeDtoList) {
-		
+	public List<PromoCodeDto> insertOrEditPromoCode(List<PromoCodeDto> promoCodeDtos) {
 		List<PromoCode> promoCodeList = new ArrayList<>();
-
-		for(PromoCodeDto dto : promoCodeDtoList) {
-			PromoCode promocode = promoCodeRepository.findByName(dto.getName());
-			if(null!=promocode) {
-				promocode.setDescription(dto.getDescription());
-				promocode.setStatus(dto.getStatus());
-				promocode.setDiscount(dto.getDiscount());
-				promocode.setValidity(dto.getValidity());
-				promocode.setModifiedDate(new Date());
-				promoCodeList.add(promocode);
-			}
-		}
+		PromoCode promocode;
+		for(PromoCodeDto dto : promoCodeDtos) {
+			if(null == dto.getId()) {
+				promocode = new PromoCode();
+				promocode.setId(utils.prepareId(promoCodeRepository.findAll().size(), "PC_"));		
+		    }else {
+		    	Optional<PromoCode> dbpromocode = promoCodeRepository.findById(dto.getId());
+		    	promocode = dbpromocode.get();
+		    }
+			promocode.setName(dto.getName());
+			promocode.setDescription(dto.getDescription());
+			promocode.setStatus(dto.getStatus());
+			promocode.setDiscount(dto.getDiscount());
+			promocode.setValidity(dto.getValidity());
+			promoCodeList.add(promocode);
+		}	
 		promoCodeRepository.saveAll(promoCodeList);
+		return getAllPromoCodes();
 	}
 }

@@ -3,21 +3,18 @@ package com.casestudy.odcw.operation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import com.casestudy.odcw.model.CarDetails;
 import com.casestudy.odcw.model.dto.CarDetailsDto;
 import com.casestudy.odcw.repository.CarDetailsRepository;
-import com.casestudy.odcw.util.ODCWConstants;
 import com.casestudy.odcw.util.ODCWUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
-@Slf4j
 public class CarManagementOperation {
 
 	@Autowired
@@ -26,7 +23,7 @@ public class CarManagementOperation {
 	@Autowired
 	private ODCWUtils utils;
 
-	public void addCar(CarDetailsDto carDetailsDto) {
+	/*public void addCar(CarDetailsDto carDetailsDto) {
 		
 		CarDetails car = carDetailsRepository.findByNumber(carDetailsDto.getNumber());
 		if(null == car) {
@@ -49,34 +46,57 @@ public class CarManagementOperation {
 		List<CarDetails> carDetailsList = new ArrayList<>();
 
 		for(CarDetailsDto carDetailsDto : carDetailsDtoList) {
-			CarDetails carDetails = carDetailsRepository.findByNumber(carDetailsDto.getNumber());
-			if(null != carDetails) {
-				carDetails.setColor(carDetailsDto.getColor());
-				carDetails.setName(carDetailsDto.getName());
+			Optional<CarDetails> carDetails = carDetailsRepository.findById(carDetailsDto.getId());
+			CarDetails car = carDetails.get();
+			if(null != car) {
+				car.setCategory(carDetailsDto.getCategory());
+				car.setName(carDetailsDto.getName());
 				carDetails.setStatus(carDetailsDto.getStatus());
-				carDetails.setNumber(carDetailsDto.getNumber());
+				carDetails.setBrand(carDetailsDto.getBrand());
 				carDetails.setModifiedDate(new Date());
 				carDetailsList.add(carDetails);
 			}
 		}
 		carDetailsRepository.saveAll(carDetailsList);
+	}*/
+	public List<CarDetailsDto> createOrUpdateCars(List<CarDetailsDto> carDetailsDtoList){
+		List<CarDetails> carDetailsList = new ArrayList<>();
+		CarDetails car;
+		for(CarDetailsDto carDetailsDto: carDetailsDtoList) {
+			if(null==carDetailsDto.getId()) {
+				car = new CarDetails();
+				car.setId(utils.prepareId(carDetailsRepository.findAll().size(), "CAR_"));
+			}else {
+				Optional<CarDetails> carDetails = carDetailsRepository.findById(carDetailsDto.getId());
+				car = carDetails.get();
+			}
+			car.setCategory(carDetailsDto.getCategory());
+			car.setName(carDetailsDto.getName());
+			car.setStatus(carDetailsDto.getStatus());
+			car.setBrand(carDetailsDto.getBrand());
+			carDetailsList.add(car);
+		}
+		carDetailsRepository.saveAll(carDetailsList);
+		return findAllCarsDetails();
 	}
+	
 
 	public List<CarDetailsDto> findAllCarsDetails(){
 		List<CarDetailsDto> carDetailsDtoList = new ArrayList<>();
 		List<CarDetails> carDetailsDb = carDetailsRepository.findAll();
 		carDetailsDb.stream().forEach(carDetails -> {
 			CarDetailsDto carDetailsDto = new CarDetailsDto();
+			carDetailsDto.setId(carDetails.getId());
 			carDetailsDto.setName(carDetails.getName());
-			carDetailsDto.setColor(carDetails.getColor());
+			carDetailsDto.setCategory(carDetails.getCategory());
 			carDetailsDto.setStatus(carDetails.getStatus());
-			carDetailsDto.setNumber(carDetails.getNumber());
+			carDetailsDto.setBrand(carDetails.getBrand());
 			carDetailsDtoList.add(carDetailsDto);
 		});
 		return carDetailsDtoList;
 	}
 
-	public List<CarDetailsDto> activeOrInActiveCars(String status) {
+	/*public List<CarDetailsDto> activeOrInActiveCars(String status) {
 		List<CarDetails> cars = carDetailsRepository.findByStatus(status);
 		List<CarDetailsDto> dtos = new ArrayList<>();
 		
@@ -94,5 +114,5 @@ public class CarManagementOperation {
 		log.info("Fetched all " + status +" Cars ");
 		}
 		return dtos;
-	}
+	}*/
 }

@@ -1,6 +1,7 @@
 package com.casestudy.odcw.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -10,5 +11,5 @@ public interface ServicePlanRepository extends MongoRepository<ServicePlans, Str
 
 	List<ServicePlans> findByStatus(String status);
 	
-	ServicePlans findByWashType(String washType);
+	Optional<ServicePlans> findById(String id);
 }

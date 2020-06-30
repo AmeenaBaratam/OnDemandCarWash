@@ -1,0 +1,38 @@
+<div class="card mx-auto">
+    <div class="card-body">
+        <div class="card-text">
+            <div>
+                <div class="row">
+                    <div class="col-sm-5">Enter the package name: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="washType"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Enter the description: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="description"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Enter the price: </div>
+                    <div class="col-sm-5"> <input type="text" [(ngModel)]="washPackage"></div>&nbsp;
+                    <button class="btn btn-primary" (click)="addRow()" *ngIf="washType && washPackage && description">Add</button>
+                </div><br>
+            </div>
+            <table class="table table-striped" *ngIf="services.length > 0">
+                <tr>
+                    <th>Package Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+                <tr *ngFor="let service of services; index as i">
+                    <td *ngIf="selectedAction === 'EditService'"><input type="text" [(ngModel)]="service.washType"></td>
+                    <td *ngIf="selectedAction !== 'EditService'">{{service.washType}}</td>
+                    <td *ngIf="selectedAction === 'EditService'"><input type="text" [(ngModel)]="service.description"></td>
+                    <td *ngIf="selectedAction !== 'EditService'">{{service.description}}</td>
+                    <td *ngIf="selectedAction === 'EditService'"><input type="text" [(ngModel)]="service.washPackage"></td>
+                    <td *ngIf="selectedAction !== 'EditService'">{{service.washPackage}}</td>
+                </tr>
+            </table><br>
+            <button class="btn btn-primary" (click)="selectedAction = 'EditService'">Edit ServicePlans</button>&nbsp;
+            <button class="btn btn-primary" (click)="saveServiceDetails(); selectedAction = null">Save Changes</button>
+        </div>
+    </div>
+</div>

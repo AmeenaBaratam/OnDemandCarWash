@@ -20,5 +20,5 @@ public class User{
 	private String email;
 	private String phoneno;
 	private String fullname;
-	
+	private String status;
 }

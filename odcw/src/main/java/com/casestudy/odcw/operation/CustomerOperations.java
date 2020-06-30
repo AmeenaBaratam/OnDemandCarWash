@@ -105,7 +105,7 @@ public class CustomerOperations {
 			if(null == customer)
 			{
 				Customer newCustomer = new Customer();
-				newCustomer.setId(utils.prepareId(customerRepository.findAll().size(), "USER_"));
+				newCustomer.setId(utils.prepareId(customerRepository.findAll().size(), "CUST_"));
 				newCustomer.setAddress(dto.getAddress());
 				newCustomer.setCreateDate(new Date());
 				newCustomer.setPhoneNumber(dto.getPhoneNumber());

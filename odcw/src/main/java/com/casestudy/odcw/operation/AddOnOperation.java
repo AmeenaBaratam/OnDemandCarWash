@@ -1,17 +1,15 @@
 package com.casestudy.odcw.operation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import com.casestudy.odcw.model.AddOn;
 import com.casestudy.odcw.model.dto.AddOnDto;
 import com.casestudy.odcw.repository.AddOnRepository;
-import com.casestudy.odcw.util.ODCWConstants;
 import com.casestudy.odcw.util.ODCWUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,41 +24,25 @@ public class AddOnOperation {
 	@Autowired
 	private ODCWUtils utils;
 
-	public void insertAddOn(AddOnDto addOnDto) {
-		
-		AddOn addOn = addOnRepository.findByName(addOnDto.getName());
-		if(null == addOn) {
-			AddOn newAddon = new AddOn();
-			newAddon.setId(utils.prepareId(addOnRepository.findAll().size(), "ADDON_"));
-			newAddon.setName(addOnDto.getName());
-			newAddon.setStatus(ODCWConstants.ACTIVE_STATUS);
-			newAddon.setDescription(addOnDto.getDescription());
-			newAddon.setCreateDate(new Date());
-			newAddon.setCost(addOnDto.getCost());
-			addOnRepository.save(newAddon);
-			System.out.println("Inserted Successfully");
-		}else {
-			System.out.println("Already Existing");
-		}	
-	}
-	
-	public void updateAddOn(List<AddOnDto> addOnDtosList) {
-		
+	public List<AddOnDto> insertOrUpdateAddOn(List<AddOnDto> addOnDtosList) {
 		List<AddOn> list = new ArrayList<>();
-
+		AddOn addon;
 		for(AddOnDto addOnDto : addOnDtosList) {
-			AddOn dbAddOn = addOnRepository.findByName(addOnDto.getName());
-			if(null != dbAddOn) {
-				dbAddOn.setName(addOnDto.getName());
-				dbAddOn.setStatus(addOnDto.getStatus());
-				dbAddOn.setDescription(addOnDto.getDescription());
-				dbAddOn.setCreateDate(addOnDto.getCreateDate());
-				dbAddOn.setModifiedDate(new Date());
-				dbAddOn.setCost(addOnDto.getCost());
-				list.add(dbAddOn);
+			if(null==addOnDto.getId()) {
+				addon = new AddOn();
+				addon.setId(utils.prepareId(addOnRepository.findAll().size(), "ADDON_"));
+			}else {
+				Optional<AddOn> dbAddOn = addOnRepository.findById(addOnDto.getId());
+				addon = dbAddOn.get();
 			}
+			addon.setName(addOnDto.getName());
+			addon.setStatus(addOnDto.getStatus());
+			addon.setDescription(addOnDto.getDescription());
+			addon.setCost(addOnDto.getCost());
+			list.add(addon);
 		}
 		addOnRepository.saveAll(list);
+		return getAllAddOns();
 	}
 
 	public List<AddOnDto> getAllAddOns() {
@@ -73,15 +55,13 @@ public class AddOnOperation {
 			addOnDto.setCost(addOn.getCost());
 			addOnDto.setId(addOn.getId());
 			addOnDto.setStatus(addOn.getStatus());
-			addOnDto.setCreateDate(addOn.getCreateDate());
-			addOnDto.setModifiedDate(addOn.getModifiedDate());
 			addOnDtos.add(addOnDto);
 		});
 		log.info("AddOn fetched Sucessfully");
 		return addOnDtos;
 	}
 
-	public List<AddOnDto> activeOrInActiveAddOn(String status){
+	/*public List<AddOnDto> activeOrInActiveAddOn(String status){
 		List<AddOn> addOns = addOnRepository.findByStatus(status);
 		List<AddOnDto> addOnDtos = new ArrayList<>();
 		
@@ -99,6 +79,6 @@ public class AddOnOperation {
 		log.info("Fetched all " + status +" Addons ");
 		}
 		return addOnDtos;
-	}
+	}*/
 
 }

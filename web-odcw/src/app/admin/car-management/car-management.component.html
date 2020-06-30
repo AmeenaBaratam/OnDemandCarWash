@@ -1,0 +1,41 @@
+<div class="card mx-auto">
+  <div class="card-body">
+    <div class="card-text">
+        <div>
+          <div class="row">
+            <div class="col-sm-5">Enter the car name: </div>
+            <div class="col-sm-5"><input type="text" [(ngModel)]="name"></div>
+          </div><br>
+          <div class="row">
+            <div class="col-sm-5">Select the category: </div>
+            <div class="col-sm-5"><select [(ngModel)]="category"><option *ngFor="let category of categories">{{ category }}</option></select>
+          </div></div><br>
+          <div class="row">
+            <div class="col-sm-5">Enter the brand: </div>
+            <div class="col-sm-5"> <input type="text" [(ngModel)]="brand"></div><br>
+            <button class="btn btn-primary" (click)="addRow()" *ngIf="category && brand && name">Add</button>
+          </div><br>
+        </div>
+        <table class="table table-striped" *ngIf="cars.length > 0">
+          <tr>
+            <th>Car Name</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th></th>
+          </tr>
+          <tr *ngFor="let car of cars; index as i">
+            <td *ngIf="selectedAction === 'EditCars'"><input type="text" [(ngModel)]="car.name"></td>
+            <td *ngIf="selectedAction !== 'EditCars'">{{car.name}}</td>
+            <td *ngIf="selectedAction === 'EditCars'"><select [(ngModel)]="car.category">
+                <option *ngFor="let category of categories">{{ category }}</option>
+            </select></td>
+            <td *ngIf="selectedAction !== 'EditCars'">{{car.category}}</td>
+            <td *ngIf="selectedAction === 'EditCars'"><input type="text" [(ngModel)]="car.brand"></td>
+            <td *ngIf="selectedAction !== 'EditCars'">{{car.brand}}</td>
+          </tr>
+        </table>
+        <button class="btn btn-primary" (click)="selectedAction = 'EditCars'">Edit Car</button>&nbsp;&nbsp;
+        <button class="btn btn-primary" (click)="saveCarDetails(); selectedAction = null">Save Changes</button>
+    </div>
+  </div>
+</div>

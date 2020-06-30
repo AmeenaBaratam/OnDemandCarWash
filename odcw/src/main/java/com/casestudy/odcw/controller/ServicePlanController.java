@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,21 +19,16 @@ import com.casestudy.odcw.util.ODCWConstants;
 
 @RestController
 @RequestMapping("/api/servicePlan")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ServicePlanController {
 
 	@Autowired
 	private ServicePlanOperation servicePlanOperation;
 	
-	@PostMapping("/add")
-	public ResponseEntity<String> addServicePlan(@RequestBody ServicePlanDto servicePlanDto) {
-		servicePlanOperation.addServicePlan(servicePlanDto);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@PostMapping("/edit")
-	public ResponseEntity<String> editServicePlan(@RequestBody List<ServicePlanDto> servicePlanDtoList) {
-		servicePlanOperation.editServicePlan(servicePlanDtoList);
-		return new ResponseEntity<>(HttpStatus.OK);
+	@PostMapping("/addOrUpdate")
+	public ResponseEntity<List<ServicePlanDto>> addServicePlan(@RequestBody List<ServicePlanDto> servicePlanDtos) {
+		List<ServicePlanDto> servicePlanDtoList = servicePlanOperation.createOrUpdate(servicePlanDtos);
+		return new ResponseEntity<>(servicePlanDtoList,HttpStatus.OK);
 	}
 	
 	@GetMapping("/{status}")

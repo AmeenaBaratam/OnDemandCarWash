@@ -1,8 +1,8 @@
 package com.casestudy.odcw.operation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 import com.casestudy.odcw.model.ServicePlans;
 import com.casestudy.odcw.model.dto.ServicePlanDto;
 import com.casestudy.odcw.repository.ServicePlanRepository;
-import com.casestudy.odcw.util.ODCWConstants;
 import com.casestudy.odcw.util.ODCWUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,39 +25,26 @@ public class ServicePlanOperation {
 	@Autowired
 	private ODCWUtils utils;
 	
-	public void addServicePlan(ServicePlanDto servicePlanDto) {
-		
-		ServicePlans plan = servicePlanRepository.findByWashType(servicePlanDto.getWashType());
-		if(null == plan) {
-			ServicePlans service = new ServicePlans();
-			service.setId(utils.prepareId(servicePlanRepository.findAll().size(), "SP_"));
-			service.setDescription(servicePlanDto.getDescription());
-			service.setStatus(ODCWConstants.ACTIVE_STATUS);
-			service.setCreateDate(new Date());
-			service.setWashType(servicePlanDto.getWashType());
-			service.setWashPackage(servicePlanDto.getWashPackage());
-			servicePlanRepository.save(service);
-			System.out.println("Inserted Successfully");
-		}else {
-			System.out.println("Already Existing");
-		}	
-	}
-	public void editServicePlan(List<ServicePlanDto> servicePlanDtoList) {
+	public List<ServicePlanDto> createOrUpdate(List<ServicePlanDto> servicePlanDtoList) {
 		
 		List<ServicePlans> servicePlanList = new ArrayList<>();
-
+		ServicePlans service;
 		for(ServicePlanDto servicePlanDto : servicePlanDtoList) {
-			ServicePlans service = servicePlanRepository.findByWashType(servicePlanDto.getWashType());
-			if(null != service) {
-				service.setDescription(servicePlanDto.getDescription());
-				service.setStatus(servicePlanDto.getStatus());
-				service.setWashType(servicePlanDto.getWashType());
-				service.setWashPackage(servicePlanDto.getWashPackage());
-				service.setModifiedDate(new Date());
-				servicePlanList.add(service);
+			if(null == servicePlanDto.getPlanId()) {
+				service = new ServicePlans();
+				service.setId(utils.prepareId(servicePlanRepository.findAll().size(), "SP_"));
+			}else{
+				Optional<ServicePlans> dbservice = servicePlanRepository.findById(servicePlanDto.getPlanId());
+				service = dbservice.get();
 			}
+			service.setDescription(servicePlanDto.getDescription());
+			service.setStatus(servicePlanDto.getStatus());
+			service.setWashType(servicePlanDto.getWashType());
+			service.setWashPackage(servicePlanDto.getWashPackage());
+			servicePlanList.add(service);
 		}
 		servicePlanRepository.saveAll(servicePlanList);
+		return findAllServicePlans();
 	}
 
 	public List<ServicePlanDto> findAllServicePlans() {

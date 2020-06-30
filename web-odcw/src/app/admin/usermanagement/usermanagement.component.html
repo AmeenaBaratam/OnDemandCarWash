@@ -1,0 +1,63 @@
+<!-- <div>
+    <div class="card">
+      <h5 class="card-header">User Management</h5>
+      <div class="card-body">
+          <button class="btn btn-success" (click)="userValue = 'userManagement'">{{ 'Customer Details' }}</button>&nbsp;&nbsp;
+          <button class="btn btn-success" (click)="userValue = 'washerManagement'">{{ 'Washer Details' }}</button>&nbsp;&nbsp;
+          <div *ngIf="userValue === 'userManagement'">
+            <div class="card">
+              <div class="card-body">
+                <button class="btn btn-link" (click)="selectedAction = 'EditUser'">Edit/Inactivate</button>
+                <table class="table table-striped table-responsive" *ngIf="users && users.length > 0">
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                  <tr *ngFor="let user of users; index as i">
+                    <td *ngIf="selectedAction === 'EditUser'"><input type="text" [(ngModel)]="user.fullname"></td>
+                    <td *ngIf="selectedAction !== 'EditUser'">{{user.fullname}}</td>
+                    <td *ngIf="selectedAction === 'EditUser'"><input type="text" [(ngModel)]="user.phoneno"></td>
+                    <td *ngIf="selectedAction !== 'EditUser'">{{user.phoneno}}</td>
+                    <td *ngIf="selectedAction === 'EditUser'"><input type="email" [(ngModel)]="user.email"></td>
+                    <td *ngIf="selectedAction !== 'EditUser'">{{user.email}}</td>
+                    <td *ngIf="selectedAction === 'EditUser' && user.status === 'valid'"><button class="btn btn-danger" (click)="invalidate(i)">Invalidate</button></td>
+                    <td *ngIf="selectedAction === 'EditUser' && user.status === 'invalid'"><button class="btn btn-danger" (click)="invalidate(i)">Validate</button></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <button class="btn btn-primary" (click)="saveUserData()">Save Changes</button>
+          </div>
+          <div *ngIf="userValue === 'washerManagement'">
+            <div class="card">
+              <div class="card-body">
+                <button class="btn btn-link" (click)="selectedAction = 'EditWasher'">Edit/Inactivate</button>
+                <table class="table table-striped table-responsive" *ngIf="washers && washers.length > 0">
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                  <tr *ngFor="let washer of washers; index as i">
+                    <td *ngIf="selectedAction === 'EditWasher'"><input type="text" [(ngModel)]="washer.fullname"></td>
+                    <td *ngIf="selectedAction !== 'EditWasher'">{{washer.fullname}}</td>
+                    <td *ngIf="selectedAction === 'EditWasher'"><input type="text" [(ngModel)]="washer.phoneno"></td>
+                    <td *ngIf="selectedAction !== 'EditWasher'">{{washer.phoneno}}</td>
+                    <td *ngIf="selectedAction === 'EditWasher'"><input type="email" [(ngModel)]="washer.email"></td>
+                    <td *ngIf="selectedAction !== 'EditWasher'">{{washer.email}}</td>
+                    <td *ngIf="selectedAction === 'EditWasher' && washer.status === 'valid'"><button class="btn btn-danger" (click)="invalidateWasher(i)">Invalidate</button></td>
+                    <td *ngIf="selectedAction === 'EditWasher' && washer.status === 'invalid'"><button class="btn btn-danger" (click)="invalidateWasher(i)">Validate</button></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <button class="btn btn-primary" (click)="saveWasherData()">Save Changes</button>&nbsp;
+            <button class="btn btn-primary" (click)="generateWasherReport()">Generate Washer Report</button>
+          </div>
+      </div>
+    </div>
+</div>
+ -->

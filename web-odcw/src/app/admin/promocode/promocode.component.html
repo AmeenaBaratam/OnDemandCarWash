@@ -1,0 +1,47 @@
+<div class="card mx-auto">
+    <div class="card-body">
+        <div class="card-text">
+            <div>
+                <div class="row">
+                    <div class="col-sm-5">Enter Name: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="name"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Enter Description: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="description"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Enter Discount: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="discount"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Enter Validity: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="validity"></div>
+                </div><br>
+                <button class="btn btn-primary" (click)="addRow()"
+                    *ngIf="description && name && validity && discount">Add</button>
+            </div><br>
+        </div>
+        <table class="table table-striped" *ngIf="promos.length > 0">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Discount</th>
+                <th>Validity</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let promo of promos; index as i">
+                <td *ngIf="selectedAction === 'EditPromo'"><input type="text" [(ngModel)]="promo.name"></td>
+                <td *ngIf="selectedAction !== 'EditPromo'">{{promo.name}}</td>
+                <td *ngIf="selectedAction === 'EditPromo'"><input type="text" [(ngModel)]="promo.description"></td>
+                <td *ngIf="selectedAction !== 'EditPromo'">{{promo.description}}</td>
+                <td *ngIf="selectedAction === 'EditPromo'"><input type="text" [(ngModel)]="promo.discount"></td>
+                <td *ngIf="selectedAction !== 'EditPromo'">{{promo.discount}}</td>
+                <td *ngIf="selectedAction === 'EditPromo'"><input type="text" [(ngModel)]="promo.validity"></td>
+                <td *ngIf="selectedAction !== 'EditPromo'">{{promo.validity}}</td>
+            </tr>
+        </table><br>
+        <button class="btn btn-primary" (click)="selectedAction = 'EditPromo'">Edit PromoCodes</button>&nbsp;
+        <button class="btn btn-primary" (click)="savePromoDetails(); selectedAction = null">Save Changes</button>
+    </div>
+</div>
