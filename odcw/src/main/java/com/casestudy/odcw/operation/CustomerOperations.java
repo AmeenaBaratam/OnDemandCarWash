@@ -1,8 +1,6 @@
 package com.casestudy.odcw.operation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,9 +32,6 @@ public class CustomerOperations {
 	
 	@Autowired
 	private ODCWUtils utils;
-	
-	@Autowired 
-	private CarManagementOperation carManagementOperation;
 	
 	@Autowired
 	private WasherRepository washerRepository;
@@ -107,7 +102,6 @@ public class CustomerOperations {
 				Customer newCustomer = new Customer();
 				newCustomer.setId(utils.prepareId(customerRepository.findAll().size(), "CUST_"));
 				newCustomer.setAddress(dto.getAddress());
-				newCustomer.setCreateDate(new Date());
 				newCustomer.setPhoneNumber(dto.getPhoneNumber());
 				newCustomer.setEmail(dto.getEmail());
 				newCustomer.setName(dto.getName());
@@ -115,7 +109,6 @@ public class CustomerOperations {
 				customersList.add(newCustomer);
 			}else {
 				customer.setAddress(dto.getAddress());
-				customer.setCreateDate(new Date());
 				customer.setPhoneNumber(dto.getPhoneNumber());
 				customer.setName(dto.getName());
 				customer.setStatus(dto.getStatus());
@@ -126,6 +119,24 @@ public class CustomerOperations {
 		return findAll();
 	}
 	
+	public CustomerDto findCustomerByEmail(String email)
+	{
+		Customer customer = customerRepository.findByEmail(email);
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setName(customer.getName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setPhoneNumber(customer.getPhoneNumber());
+		return customerDto;
+	}
+	
+	public CustomerDto updateCustomerByEmail(CustomerDto customerDto)
+	{
+		Customer customer = customerRepository.findByEmail(customerDto.getEmail());
+		customer.setPhoneNumber(customerDto.getPhoneNumber());
+		customer.setName(customerDto.getName());
+		customerRepository.save(customer);
+		return customerDto;
+	}
 	public String giveRating(ReviewRatingsDto ratingsDto)
 	{
 		float total=0;

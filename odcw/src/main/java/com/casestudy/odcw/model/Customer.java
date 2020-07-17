@@ -17,7 +17,7 @@ public class Customer extends CarWashObject{
 	@DBRef
 	private List<CarDetails> carDetails;
 	private String email;
-	private long phoneNumber;
+	private String phoneNumber;
 	private Date lastCarWashDate;
 	private String address;
 	@DBRef

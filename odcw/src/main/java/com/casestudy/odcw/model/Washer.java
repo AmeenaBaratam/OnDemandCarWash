@@ -13,10 +13,10 @@ import lombok.Setter;
 @Setter
 public class Washer extends CarWashObject {
 	
-	private String emailId;
+	private String email;
 	@DBRef
 	private List<OrderDetails> orderList;
-	private long phoneNumber;
+	private String phoneNumber;
 	@DBRef
 	private List<ReviewRatings> ratings;
 	private String name;

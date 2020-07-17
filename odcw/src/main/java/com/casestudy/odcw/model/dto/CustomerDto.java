@@ -14,7 +14,7 @@ public class CustomerDto {
 	private String id;
 	private List<CarDetails> carDetails;
 	private String email;
-	private long phoneNumber;
+	private String phoneNumber;
 	private Date lastCarWashDate;
 	private String address;
 	private List<ReviewRatings> ratings;

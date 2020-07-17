@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,18 +20,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.casestudy.odcw.model.Customer;
 import com.casestudy.odcw.model.ReviewRatings;
 import com.casestudy.odcw.model.Washer;
+import com.casestudy.odcw.model.dto.CustomerDto;
 import com.casestudy.odcw.model.dto.ReviewRatingsDto;
 import com.casestudy.odcw.model.dto.WasherDto;
 import com.casestudy.odcw.repository.WasherRepository;
 import com.casestudy.odcw.util.ODCWConstants;
 import com.casestudy.odcw.util.ODCWUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
-@Slf4j
 public class WasherOperation {
 	
 	@Autowired
@@ -52,7 +50,7 @@ public class WasherOperation {
 			washerDto.setOrderList(washer.getOrderList());
 			washerDto.setRatings(washer.getRatings());
 			washerDto.setPhoneNumber(washer.getPhoneNumber());
-			washerDto.setEmailId(washer.getEmailId());
+			washerDto.setEmail(washer.getEmail());
 			washerDtoList.add(washerDto);
 		});
 		return washerDtoList;
@@ -61,11 +59,11 @@ public class WasherOperation {
 	public List<WasherDto> addOrUpdateWasher(List<WasherDto> washerDtoList){
 		List<Washer> washerList = new ArrayList<>();
 		for(WasherDto washerDto : washerDtoList) {
-			Washer washer = washerRepository.findByEmailId(washerDto.getEmailId());
+			Washer washer = washerRepository.findByEmail(washerDto.getEmail());
 			if(null == washer) {
 				Washer newWasher = new Washer();
 				newWasher.setId(utils.prepareId(washerRepository.findAll().size(), "WASHER_"));
-				newWasher.setEmailId(washerDto.getEmailId());
+				newWasher.setEmail(washerDto.getEmail());
 				newWasher.setCreateDate(new Date());
 				newWasher.setName(washerDto.getName());
 				newWasher.setPhoneNumber(washerDto.getPhoneNumber());
@@ -149,7 +147,7 @@ public class WasherOperation {
 	        	dataRow.createCell(0).setCellValue(washers.get(i).getId());
 	        	dataRow.createCell(1).setCellValue(washers.get(i).getName());
 	        	dataRow.createCell(2).setCellValue(washers.get(i).getPhoneNumber());
-	        	dataRow.createCell(3).setCellValue(washers.get(i).getEmailId());
+	        	dataRow.createCell(3).setCellValue(washers.get(i).getEmail());
 	        	dataRow.createCell(4).setCellValue(washers.get(i).getOverallRating());
 	        }
 	
@@ -180,5 +178,24 @@ public class WasherOperation {
                 .sorted((Map.Entry.<WasherDto, Integer>comparingByValue().reversed()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		return washerMap.keySet().stream().collect(Collectors.toList());
+	}
+	
+	public WasherDto findWasherByEmail(String email)
+	{
+		Washer washer = washerRepository.findByEmail(email);
+		WasherDto washerDto = new WasherDto();
+		washerDto.setName(washer.getName());
+		washerDto.setEmail(washer.getEmail());
+		washerDto.setPhoneNumber(washer.getPhoneNumber());
+		return washerDto;
+	}
+	
+	public WasherDto updateWasherByEmail(WasherDto washerDto)
+	{
+		Washer washer = washerRepository.findByEmail(washerDto.getEmail());
+		washer.setPhoneNumber(washerDto.getPhoneNumber());
+		washer.setName(washerDto.getName());
+		washerRepository.save(washer);
+		return washerDto;
 	}
 }

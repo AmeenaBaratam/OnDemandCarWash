@@ -6,4 +6,5 @@ import com.casestudy.odcw.model.AddOn;
 
 public interface AddOnRepository extends MongoRepository<AddOn, String>{
 
+	AddOn findByName(String name);
 }

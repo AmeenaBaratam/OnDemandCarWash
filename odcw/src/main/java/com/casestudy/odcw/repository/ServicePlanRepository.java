@@ -12,4 +12,6 @@ public interface ServicePlanRepository extends MongoRepository<ServicePlans, Str
 	List<ServicePlans> findByStatus(String status);
 	
 	Optional<ServicePlans> findById(String id);
+	
+	ServicePlans findByWashType(String type);
 }

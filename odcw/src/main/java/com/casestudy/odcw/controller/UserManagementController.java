@@ -9,6 +9,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.casestudy.odcw.util.ODCWConstants;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserManagementController {
 
 	@Autowired
@@ -41,6 +43,11 @@ public class UserManagementController {
 	@PostMapping("/washer/addUpdateWasher")
 	public ResponseEntity<List<WasherDto>> addOrUpdateWasher(@RequestBody List<WasherDto> washerDtos) {
 		return new ResponseEntity<>(washerOperation.addOrUpdateWasher(washerDtos),HttpStatus.OK);
+	}
+	
+	@GetMapping("/customer/getCustomer")
+	public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+		return new ResponseEntity<>(customerOperations.findAll(),HttpStatus.OK);
 	}
 	
 	@PostMapping("/customer/addOrUpdate")
@@ -81,14 +88,10 @@ public class UserManagementController {
 	
 	@GetMapping(value = "/washer/download/washerReport.xlsx")
     public ResponseEntity<InputStreamResource> excelWasherReport() throws IOException {
-    ByteArrayInputStream in = washerOperation.washerReportToExcelFile();
-   
-    HttpHeaders headers = new HttpHeaders();
+		ByteArrayInputStream in = washerOperation.washerReportToExcelFile();
+		HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=washerReport.xlsx");
-     return ResponseEntity
-                  .ok()
-                  .headers(headers)
-                  .body(new InputStreamResource(in));
+        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
     }
 	
 	@GetMapping("/leaderbord")

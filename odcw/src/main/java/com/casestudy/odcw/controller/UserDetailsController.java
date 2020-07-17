@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.casestudy.odcw.model.User;
+import com.casestudy.odcw.model.Washer;
 import com.casestudy.odcw.model.dto.UserDto;
 import com.casestudy.odcw.operation.UserOperations;
+import com.casestudy.odcw.repository.WasherRepository;
 
 @RestController
 @RequestMapping("/api/user")
@@ -25,6 +25,9 @@ public class UserDetailsController {
 
 	@Autowired
 	private UserOperations userOperations;
+	
+	@Autowired 
+	private WasherRepository repo;
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserDto> login(@RequestBody UserDto userDto) {
@@ -45,5 +48,5 @@ public class UserDetailsController {
 			return new ResponseEntity<>(userResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
 }

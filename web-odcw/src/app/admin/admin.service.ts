@@ -39,4 +39,24 @@ export class AdminService {
   saveServicePlans(obj:Object) {
     return this.httpClient.post('http://localhost:8080/api/servicePlan/addOrUpdate', obj)
   }
+
+  fetchCustomers(){
+    return this.httpClient.get('http://localhost:8080/api/user/customer/getCustomer')
+  }
+
+  fetchWashers(){
+    return this.httpClient.get('http://localhost:8080/api/user/washer/getWasher')
+  }
+
+  saveUserList(obj:Object) {
+    return this.httpClient.post('http://localhost:8080/api/user/customer/addOrUpdate', obj)
+  }
+
+  saveWasherList(obj:Object) {
+    return this.httpClient.post('http://localhost:8080/api/user/washer/addUpdateWasher', obj)
+  }
+
+  generateWasherReport(){
+    return this.httpClient.get('http://localhost:8080/api/user/washer/download/washerReport.xlsx')
+  }
 }

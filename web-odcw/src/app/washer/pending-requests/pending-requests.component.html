@@ -1,0 +1,68 @@
+<div class="card" style="border:0px;">
+    <div class="card-body">
+        <div class="card-text">
+            <label><b>Pending Requests</b></label><br>
+            <label *ngIf="requests.length == 0">no pending requests</label><br>
+            <table class="table table-striped" *ngIf="requests.length > 0" style="width: 132%;">
+                <tr>
+                    <th>Order Id</th>
+                    <th>Car Name</th>
+                    <th>Service Plan</th>
+                    <th>Add On</th>
+                    <th>Customer Id</th>
+                    <th>CarWash Date</th>
+                    <th>Booking Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+                <tr *ngFor="let request of requests; index as i">
+                    <td>{{request.id}}</td>
+                    <td>{{request.brand}} {{request.name}} {{request.category}}</td>
+                    <td>{{request.washType}}</td>
+                    <td>{{request.addOn}}</td>
+                    <td>{{request.customer}}</td>
+                    <td>{{request.carWashDate | date}}</td>
+                    <td>{{request.orderedDate | date}}</td>
+                    <td>{{request.totalCost | currency}}</td>
+                    <td *ngIf="selectedAction !== 'Edit'">{{request.status}}</td>
+                    <td *ngIf="selectedAction === 'Edit'"><select [(ngModel)]="request.status">
+                            <option *ngFor="let status1 of statusList1">{{ status1 }}</option></select>
+                    </td>
+                </tr>
+            </table><br>
+            <button class="btn btn-primary" (click)="selectedAction = 'Edit'">Edit</button>&nbsp;
+            <button class="btn btn-primary" (click)="updateToAssigned(); selectedAction = null">Save Changes</button><br><br>
+            <label><b>Current Orders</b></label>
+            <label *ngIf="orders.length == 0">no current requests</label><br>
+            <table class="table table-striped" *ngIf="orders.length > 0" style="width: 132%;">
+                <tr>
+                    <th>Order Id</th>
+                    <th>Car Name</th>
+                    <th>Service Plan</th>
+                    <th>Add On</th>
+                    <th>Customer Id</th>
+                    <th>CarWash Date</th>
+                    <th>Booking Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+                <tr *ngFor="let order of orders; index as i">
+                    <td>{{order.id}}</td>
+                    <td>{{order.brand}} {{order.name}} {{order.category}}</td>
+                    <td>{{order.washType}}</td>
+                    <td>{{order.addOn}}</td>
+                    <td>{{order.customer}}</td>
+                    <td>{{order.carWashDate | date}}</td>
+                    <td>{{order.orderedDate | date}}</td>
+                    <td>{{order.totalCost | currency}}</td>
+                    <td *ngIf="selectedAction !== 'Edit'">{{order.status}}</td>
+                    <td *ngIf="selectedAction === 'Edit'"><select [(ngModel)]="order.status">
+                            <option *ngFor="let status2 of statusList2">{{ status2 }}</option></select>
+                    </td>
+                </tr>
+            </table><br>
+            <button class="btn btn-primary" (click)="selectedAction = 'Edit'">Edit</button>&nbsp;
+            <button class="btn btn-primary" (click)="updateToComplete(); selectedAction = null">Save Changes</button><br>
+        </div>
+    </div>
+</div>

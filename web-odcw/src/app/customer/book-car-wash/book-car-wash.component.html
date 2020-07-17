@@ -1,0 +1,76 @@
+<div class="card mx-auto">
+    <div class="card-body">
+        <div class="card-text">
+            <div>
+                <label><b>Customer Details:</b></label><br>
+                <div class="row">
+                    <div class="col-sm-5">Name: </div>
+                    <div class="col-sm-5">{{user.name}}</div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Phone Number: </div>
+                    <div class="col-sm-5">{{user.phoneNumber}}</div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Address: </div>
+                    <div class="col-sm-5"><input type="text" [(ngModel)]="user.address"></div>
+                </div><br>
+                <label><b>Car Details:</b></label><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the category: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="category">
+                            <option>Select Option</option>
+                            <option *ngFor="let category of categories">{{ category }}</option>
+                        </select></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the brand: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="brand">
+                            <option>Select Option</option>
+                            <option *ngFor="let brand of brands">{{ brand }}</option>
+                        </select></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the name: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="name">
+                            <option>Select Option</option>
+                            <option *ngFor="let name of names">{{ name }}</option>
+                        </select></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the Service Plan: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="washType">
+                            <option>Select Option</option>
+                            <option *ngFor="let washType of washTypes">{{ washType }}</option>
+                        </select></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the Add-On: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="addOn">
+                            <option>Select Option</option>
+                            <option *ngFor="let addOn of addOns">{{ addOn }}</option>
+                        </select></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Schedule the date of wash:</div>
+                    <div class="col-sm-5">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+                                [(ngModel)]="carWashDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Select the Washer: </div>
+                    <div class="col-sm-5"><select [(ngModel)]="washer">
+                            <option>Select Option</option>
+                            <option *ngFor="let washer of washers">{{ washer }}</option>
+                        </select></div>
+                </div><br>
+                <button type="submit" class="btn btn-primary" (click)="bookCarWash()">BookCarWash</button>
+            </div>
+        </div>
+    </div> 
+</div>

@@ -11,5 +11,4 @@ export class LoginService {
   fetchUserByEmail(userDetails){
     return this.http.post('http://localhost:8080/api/user/login', userDetails)
   }
-
 }

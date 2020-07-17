@@ -12,9 +12,9 @@ import lombok.Data;
 public class WasherDto {
 
 	private String id;
-	private String emailId;
+	private String email;
 	private List<OrderDetails> orderList;
-	private long phoneNumber;
+	private String phoneNumber;
 	private List<ReviewRatings> ratings;
 	private Date createDate;
 	private Date modifiedDate;

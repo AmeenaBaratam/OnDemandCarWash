@@ -1,0 +1,27 @@
+<div class="card mx-auto">
+    <div class="card-body">
+        <div class="card-text">
+            <div>
+                <div class="row">
+                    <div class="col-sm-5">Email Id: </div>
+                    <div class="col-sm-5">{{user.email}}</div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Name: </div>
+                    <div class="col-sm-5" *ngIf="selectedAction !== 'Edit'">{{user.name}}</div>
+                    <div class="col-sm-5" *ngIf="selectedAction === 'Edit'"><input type="text" [(ngModel)]="user.name">
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5">Phone Number: </div>
+                    <div class="col-sm-5" *ngIf="selectedAction !== 'Edit'">{{user.phoneNumber}}</div>
+                    <div class="col-sm-5" *ngIf="selectedAction === 'Edit'"><input type="text"
+                            [(ngModel)]="user.phoneNumber">
+                    </div>
+                </div><br>
+            </div>
+            <button class="btn btn-primary" (click)="selectedAction = 'Edit'">Edit</button>&nbsp;&nbsp;
+            <button class="btn btn-primary" (click)="saveDetails(); selectedAction = null">Save Changes</button>
+        </div>
+    </div>
+</div>

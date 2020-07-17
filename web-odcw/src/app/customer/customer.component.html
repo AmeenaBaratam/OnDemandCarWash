@@ -1,1 +1,15 @@
-<p>customer works!</p>
+<div class="container-fluid" style="padding: 0rem">
+    <div class="jumbotron" style="padding: 0rem;margin-bottom: auto;text-align: right;">
+        <a class="btn btn-link" [routerLink]="['../login']">logout</a>
+    </div>
+</div>
+<div class="container row">
+    <div class="vertical-menu">
+        <a class="btn btn-link" [routerLink]="['booking']">Book Car Wash</a>
+        <a class="btn btn-link" [routerLink]="['orders']">My Orders</a>
+        <a class="btn btn-link" [routerLink]="['profile']">Profile</a>
+    </div>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -10,5 +10,5 @@ public interface WasherRepository extends MongoRepository<Washer, String>{
 
 	List<Washer> findByStatus(String status);
 	
-	Washer findByEmailId(String email);
+	Washer findByEmail(String email);
 }

@@ -1,0 +1,14 @@
+.vertical-menu{
+    background-color: #e9ecef;
+    width: 25%;
+}
+.vertical-menu a{
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    text-align: left;
+}
+.content{
+    margin-left: 1%;
+    width: 74%;
+}

@@ -1,3 +1,8 @@
+<div class="container-fluid" style="padding: 0rem">
+    <div class="jumbotron" style="padding: 0rem;margin-bottom: auto;text-align: right;">
+        <a class="btn btn-link" [routerLink]="['../login']">logout</a>
+    </div>
+</div>
 <div class="container row">
     <div class="vertical-menu">
         <a class="btn btn-link" [routerLink]="['addon']">Add-On Management</a>
@@ -5,7 +10,6 @@
         <a class="btn btn-link" [routerLink]="['service']">Service Management</a>
         <a class="btn btn-link" [routerLink]="['promo']">Promo Code Management</a>
         <a class="btn btn-link" [routerLink]="['user']">User Management</a>
-        <a class="btn btn-link" [routerLink]="['order']">Order Management</a>
     </div>
     <div class="content">
         <router-outlet></router-outlet>

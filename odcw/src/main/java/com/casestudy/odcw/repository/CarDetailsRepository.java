@@ -13,5 +13,5 @@ public interface CarDetailsRepository extends MongoRepository<CarDetails, String
 	
 	Optional<CarDetails> findById(String id);
 	List<CarDetails> findByStatus(String status);
-
+	CarDetails findByBrandAndCategoryAndName(String brand,String category,String name);
 }

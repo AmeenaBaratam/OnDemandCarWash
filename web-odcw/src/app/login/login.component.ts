@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +27,8 @@ export class LoginComponent implements OnInit {
       this.service.fetchUserByEmail(obj).subscribe(data => {
         let url = data['role']
         this.router.navigate([url])
+        sessionStorage.setItem('email', JSON.stringify(this.username));
+        sessionStorage.setItem('role', JSON.stringify(url));
       })
     }else {
       alert('Please enter all the required details')
